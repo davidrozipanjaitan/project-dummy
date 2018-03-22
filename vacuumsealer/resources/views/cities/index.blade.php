@@ -23,13 +23,13 @@
 
 <table class="table table-bordered">
     <tr>
-        <th width="10%"><center>No</center></th>
-        <th align="center">Nama Kota</th> 
+        <th width="10px"><center>No</center></th>
+        <th align="40px">Nama Kota</th> 
         <th align="center">Postal Code</th> 
         <th align="center">Provinsi</th>
         <th align="center">Country</th> 
         <th align="center">Region</th> 
-        <th width="180px">Actions</th>
+        <th width="280px">Actions</th>
         
     </tr>
 
@@ -43,9 +43,9 @@
         <td>{{$city->provinsi->country->name}}</td>
         <td>{{$city->provinsi->country->region->nama}}</td>
         <td>
-            <a class="btn btn-info">Show</a>
-            <a class="btn btn-primary">Edit</a>            
-            {!! Form::open(['method' => 'DELETE', 'style'=>'display:inline']) !!}
+            <a class="btn btn-info" href="{{ route('city.show',$city->id) }}">Show</a>
+            <a class="btn btn-primary" href="{{ route('city.edit',$city->id) }}">Edit</a>                        
+            {!! Form::open(['method' => 'DELETE', 'route' => ['city.destroy', $city->id], 'style'=>'display:inline']) !!}
             {!! Form::submit('Delete', ['class' => 'btn btn-danger']) !!}
             {!! Form::close() !!}
         </td>

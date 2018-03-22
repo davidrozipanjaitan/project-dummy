@@ -96,6 +96,8 @@ class CitiesController extends Controller {
      */
     public function show($id) {
         //
+        $city = \App\Cities::find($id);
+        return view('cities.show', compact('city'));
     }
 
     /**
@@ -105,7 +107,15 @@ class CitiesController extends Controller {
      * @return \Illuminate\Http\Response
      */
     public function edit($id) {
-        //
+        //        
+        $data = \App\Cities::find($id);  
+        $region = \App\Region::all();
+        $country = \App\Country::all();
+        $provinsi = \App\Provinsi::all();  
+        
+        $city = \App\Cities::where('id_provinsi', '=', $data->provinsi->id)->get();
+        
+        return view('cities.edit', compact('data', 'region', 'country', 'provinsi'));
     }
 
     /**
@@ -117,6 +127,25 @@ class CitiesController extends Controller {
      */
     public function update(Request $request, $id) {
         //
+        $this->validate($request, [
+            'nama_cities' => 'required',
+            'postal_code' => 'required',
+        ]);
+//        \App\Provinsi::find($id)->update($request->all());
+        
+        $city = \App\Cities::find($id);
+        $city->nama_cities = Input::get('nama_cities');
+        $city->postal_code = Input::get('postal_code');
+        $city->id_provinsi = Input::get('id_provinsi');
+        $city->save();
+        
+//        $provinsi = \App\Provinsi::find($id);
+//        $provinsi->nama_provinsi = Input::get('nama_provinsi');
+//        $provinsi->id_country = Input::get('country_id');
+//        $provinsi->save();
+
+        return redirect()->route('city.index')
+                        ->with('success', 'City updated successfully');
     }
 
     /**
@@ -127,6 +156,10 @@ class CitiesController extends Controller {
      */
     public function destroy($id) {
         //
+        $city = \App\Cities::find($id);
+        $city->delete();
+        return redirect()->route('city.index')
+                        ->with('success', 'Kota berhasil dihapus');
     }
 
 //    public function myform()
